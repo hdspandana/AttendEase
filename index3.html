@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Attendance Calculator — Final Fixed</title>
+
+<style>
+    :root {
+        --bg: #f0f4f8;
+        --card-bg: #ffffff;
+        --text: #2d3748;
+        --accent: #4299e1;
+        --success: #04885a;
+        --error: #b00020;
+        --border-radius: 12px;
+        --shadow: 0 6px 24px rgba(0,0,0,0.08);
+    }
+    *{box-sizing:border-box}
+    body{
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      background: linear-gradient(180deg,#e6f0ff 0%, #f7fbff 100%);
+      padding:28px;
+      display:flex;
+      justify-content:center;
+    }
+    .container{
+      width:100%;
+      max-width:520px;
+      background:var(--card-bg);
+      border-radius:var(--border-radius);
+      padding:20px;
+      box-shadow:var(--shadow);
+    }
+    h1{margin:0 0 14px;color:var(--text);font-size:20px;text-align:center}
+    label{display:block;color:var(--text);margin-top:10px;font-weight:600}
+    input[type=number]{width:100%;padding:10px;border-radius:8px;border:1px solid #dbe9ff;margin-top:8px;font-size:15px}
+    button.calc{width:100%;margin-top:16px;padding:12px;background:var(--accent);color:#fff;border:0;border-radius:10px;font-weight:700;cursor:pointer}
+    .result-box{margin-top:16px;padding:14px;border-radius:10px;background:#fbfdff;border:1px solid #e6f4ff;display:none}
+    .error-box{margin-top:16px;padding:14px;border-radius:10px;background:#fff0f0;border:1px solid #ffd6d6;color:var(--error);font-weight:700;display:none}
+    .big{font-size:26px;font-weight:900;color:var(--accent);text-align:center;margin-top:12px}
+    .small{font-size:14px;color:#6b7280;margin-top:8px}
+    .share-row{display:flex;gap:10px;margin-top:12px}
+    .whatsapp{flex:1;padding:10px;background:#25d366;color:#fff;border-radius:8px;text-align:center;text-decoration:none;font-weight:700}
+    .instagram{flex:1;padding:10px;background:#e4405f;color:#fff;border-radius:8px;border:0;cursor:pointer;font-weight:700}
+</style>
+</head>
+
+<body>
+  <div class="container" role="main" aria-label="Attendance Calculator">
+    <h1>Attendance Calculator</h1>
+
+    <label for="attended">Classes Attended Till Now</label>
+    <input id="attended" type="number" min="0" placeholder="e.g. 25">
+
+    <label for="absent">Classes Absent Till Now</label>
+    <input id="absent" type="number" min="0" placeholder="e.g. 3">
+
+    <label for="totalSem">Total Classes in Semester</label>
+    <input id="totalSem" type="number" min="1" placeholder="e.g. 43">
+
+    <label for="target">Target Attendance %</label>
+    <input id="target" type="number" min="0" max="100" value="75">
+
+    <button class="calc" id="calcBtn">Calculate</button>
+
+    <div id="errorBox" class="error-box"></div>
+
+    <div id="result" class="result-box">
+      <div id="summary" class="small"></div>
+      <div id="numbers" style="margin-top:10px;"></div>
+      <div id="big" class="big" style="display:none"></div>
+      <div id="explain" class="small" style="display:none"></div>
+
+      <div class="share-row" id="shareRow" style="display:none">
+        <a id="waShare" class="whatsapp" target="_blank">WhatsApp</a>
+        <button id="igShare" class="instagram">Instagram</button>
+      </div>
+    </div>
+  </div>
+
+
+<script>
+(function(){
+  const attendedEl = document.getElementById('attended');
+  const absentEl = document.getElementById('absent');
+  const totalEl = document.getElementById('totalSem');
+  const targetEl = document.getElementById('target');
+  const calcBtn = document.getElementById('calcBtn');
+
+  const errorBox = document.getElementById('errorBox');
+  const result = document.getElementById('result');
+  const summary = document.getElementById('summary');
+  const numbers = document.getElementById('numbers');
+  const big = document.getElementById('big');
+  const explain = document.getElementById('explain');
+  const shareRow = document.getElementById('shareRow');
+  const waShare = document.getElementById('waShare');
+  const igShare = document.getElementById('igShare');
+
+  function hideAll(){
+    errorBox.style.display = 'none';
+    result.style.display = 'none';
+    shareRow.style.display = 'none';
+    big.style.display = 'none';
+    explain.style.display = 'none';
+  }
+
+  function showError(msg){
+    errorBox.textContent = msg;
+    errorBox.style.display = 'block';
+    result.style.display = 'none';
+    shareRow.style.display = 'none';
+  }
+
+  function calculate(){
+    hideAll();
+
+    const attended = Number(attendedEl.value);
+    const absent = Number(absentEl.value);
+    const totalSem = Number(totalEl.value);
+    const target = Number(targetEl.value);
+
+    if (attended < 0 || absent < 0 || totalSem <= 0 || target < 0 || target > 100){
+      showError("Please enter valid numbers.");
+      return;
+    }
+
+    const conducted = attended + absent;
+    if (conducted === 0){
+      showError("No classes conducted yet.");
+      return;
+    }
+    if (conducted > totalSem){
+      showError("Conducted classes cannot exceed semester total.");
+      return;
+    }
+
+    const remaining = totalSem - conducted;
+
+    const currentPercent = (attended / conducted) * 100;
+    const requiredAttended = Math.ceil((target / 100) * totalSem);
+
+    const maxPossibleAttended = attended + remaining;
+
+    if (maxPossibleAttended < requiredAttended){
+      showError(`❗Even if you attend all ${remaining}, you cannot reach ${target}%.`);
+      result.style.display = 'block';
+      summary.innerHTML = `Conducted: <b>${conducted}</b> • Remaining: <b>${remaining}</b>`;
+      return;
+    }
+
+    const needToAttend = Math.max(0, requiredAttended - attended);
+    let maxBunk = remaining - needToAttend;
+    if (maxBunk < 0) maxBunk = 0;
+
+    result.style.display = 'block';
+    summary.innerHTML =
+      `Conducted: <b>${conducted}</b> • Attended: <b>${attended}</b> • Absent: <b>${absent}</b> • Remaining: <b>${remaining}</b>`;
+
+    numbers.innerHTML =
+      `Current Attendance: <b>${currentPercent.toFixed(2)}%</b><br>Required by end: <b>${requiredAttended}</b>`;
+
+    big.style.display = 'block';
+    big.innerHTML = `${needToAttend} TO ATTEND • ${maxBunk} CAN BUNK`;
+
+    explain.style.display = 'block';
+    explain.innerText = `Attend ${needToAttend} of the remaining ${remaining} classes to stay above ${target}%.`;
+
+    const shareText =
+      `Attendance Report\nAttended: ${attended}\nAbsent: ${absent}\nConducted: ${conducted}\nCurrent: ${currentPercent.toFixed(2)}%\nTarget: ${target}%\n${needToAttend} to attend • ${maxBunk} can bunk`;
+
+    waShare.href = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
+
+    igShare.onclick = async () => {
+      await navigator.clipboard.writeText(shareText);
+      alert("Copied! Paste in Instagram.");
+      window.open("https://www.instagram.com", "_blank");
+    };
+
+    shareRow.style.display = 'flex';
+  }
+
+  calcBtn.addEventListener('click', calculate);
+})();
+</script>
+
+</body>
+</html>
