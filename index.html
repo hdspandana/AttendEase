@@ -144,7 +144,7 @@
     const maxPossibleAttended = attended + remaining;
 
     if (maxPossibleAttended < requiredAttended){
-      showError(`❗Even if you attend all ${remaining}, you cannot reach ${target}%.`);
+      showError(`❗Even if you attend all ${remaining}, you cannot reach ${target}%.😢`);
       result.style.display = 'block';
       summary.innerHTML = `Conducted: <b>${conducted}</b> • Remaining: <b>${remaining}</b>`;
       return;
@@ -162,7 +162,7 @@
       `Current Attendance: <b>${currentPercent.toFixed(2)}%</b><br>Required by end: <b>${requiredAttended}</b>`;
 
     big.style.display = 'block';
-    big.innerHTML = `${needToAttend} TO ATTEND • ${maxBunk} CAN BUNK`;
+    big.innerHTML = `${needToAttend} TO ATTEND🤷‍♀️ • ${maxBunk} CAN BUNK😎`;
 
     explain.style.display = 'block';
     explain.innerText = `Attend ${needToAttend} of the remaining ${remaining} classes to stay above ${target}%.`;
