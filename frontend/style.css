@@ -1,0 +1,38 @@
+ :root {
+        --bg: #f0f4f8;
+        --card-bg: #ffffff;
+        --text: #2d3748;
+        --accent: #4299e1;
+        --success: #04885a;
+        --error: #b00020;
+        --border-radius: 12px;
+        --shadow: 0 6px 24px rgba(0,0,0,0.08);
+    }
+    *{box-sizing:border-box}
+    body{
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      background: linear-gradient(180deg,#e6f0ff 0%, #f7fbff 100%);
+      padding:28px;
+      display:flex;
+      justify-content:center;
+    }
+    .container{
+      width:100%;
+      max-width:520px;
+      background:var(--card-bg);
+      border-radius:var(--border-radius);
+      padding:20px;
+      box-shadow:var(--shadow);
+    }
+    h1{margin:0 0 14px;color:var(--text);font-size:20px;text-align:center}
+    label{display:block;color:var(--text);margin-top:10px;font-weight:600}
+    input[type=number]{width:100%;padding:10px;border-radius:8px;border:1px solid #dbe9ff;margin-top:8px;font-size:15px}
+    button.calc{width:100%;margin-top:16px;padding:12px;background:var(--accent);color:#fff;border:0;border-radius:10px;font-weight:700;cursor:pointer}
+    .result-box{margin-top:16px;padding:14px;border-radius:10px;background:#fbfdff;border:1px solid #e6f4ff;display:none}
+    .error-box{margin-top:16px;padding:14px;border-radius:10px;background:#fff0f0;border:1px solid #ffd6d6;color:var(--error);font-weight:700;display:none}
+    .big{font-size:26px;font-weight:900;color:var(--accent);text-align:center;margin-top:12px}
+    .small{font-size:14px;color:#6b7280;margin-top:8px}
+    .share-row{display:flex;gap:10px;margin-top:12px}
+    .whatsapp{flex:1;padding:10px;background:#25d366;color:#fff;border-radius:8px;text-align:center;text-decoration:none;font-weight:700}
+    .instagram{flex:1;padding:10px;background:#e4405f;color:#fff;border-radius:8px;border:0;cursor:pointer;font-weight:700}
+

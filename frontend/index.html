@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Attendance Calculator</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+  <h1>Attendance Calculator</h1>
+
+  <label>Classes Attended Till Now</label>
+  <input id="attended" type="number" placeholder="e.g. 25">
+
+  <label>Classes Absent Till Now</label>
+  <input id="absent" type="number" placeholder="e.g. 3">
+
+  <label>Total Classes in Semester</label>
+  <input id="totalSem" type="number" placeholder="e.g. 43">
+
+  <label>Target Attendance %</label>
+  <input id="target" type="number" value="75" placeholder="e.g. 75">
+
+  <button class="calc" id="calcBtn">Calculate</button>
+
+  <div id="errorBox" class="error-box"></div>
+
+  <div id="result" class="result-box">
+    <div id="summary"></div>
+    <div id="numbers"></div>
+    <div id="big" class="big"></div>
+    <div id="explain"></div>
+
+    <div class="share-row" id="shareRow">
+      <a id="waShare" class="whatsapp">WhatsApp</a>
+      <button id="igShare" class="instagram">Instagram</button>
+    </div>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
